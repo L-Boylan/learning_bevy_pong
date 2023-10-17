@@ -6,6 +6,7 @@ pub struct Player1;
 pub struct Player2;
 
 const PADDLE_SPEED: f32 = 500.0;
+const PADDLE_SIZE: Vec2 = Vec2::new(30.0, 100.0);
 pub fn draw_paddle(
     mut commands: Commands,
     //mut meshes: ResMut<Assets<Mesh>>,
@@ -16,7 +17,7 @@ pub fn draw_paddle(
     commands.spawn((Player1, SpriteBundle{
         sprite: Sprite {
             color: Color::rgb(0.25, 0.25, 0.75),
-            custom_size: Some(Vec2::new(50.0, 100.0)),
+            custom_size: Some(PADDLE_SIZE),
             ..default()
         },
         transform: Transform::from_translation(Vec3::new(-480.0, 0.0, 0.0)),
@@ -26,7 +27,7 @@ pub fn draw_paddle(
     commands.spawn((Player2, SpriteBundle{
         sprite: Sprite {
             color: Color::rgb(0.25, 0.25, 0.75),
-            custom_size: Some(Vec2::new(50.0, 100.0)),
+            custom_size: Some(PADDLE_SIZE),
             ..default()
         },
         transform: Transform::from_translation(Vec3::new(480.0, 0.0, 0.0)),
@@ -49,9 +50,12 @@ pub fn move_paddle_player1(
         direction += 1.0;
     }
 
+    let top_bound = 350.0 - PADDLE_SIZE.y / 2.0;
+    let bottom_bound = -350.0 +PADDLE_SIZE.y / 2.0;
+
     let new_paddle_position = paddle_transform.translation.y + direction * PADDLE_SPEED * time_step.period.as_secs_f32();
 
-    paddle_transform.translation.y = new_paddle_position;
+    paddle_transform.translation.y = new_paddle_position.clamp( bottom_bound, top_bound);
 }
 
 pub fn move_paddle_player2(
@@ -69,8 +73,11 @@ pub fn move_paddle_player2(
         direction -= 1.0;
     }
 
+    let top_bound = 350.0 - PADDLE_SIZE.y / 2.0;
+    let bottom_bound = -350.0 +PADDLE_SIZE.y / 2.0;
+
     let new_paddle_position = paddle_transform.translation.y + direction * PADDLE_SPEED * time_step.period.as_secs_f32();
 
-    paddle_transform.translation.y = new_paddle_position;
+    paddle_transform.translation.y = new_paddle_position.clamp(bottom_bound, top_bound);
 }
 

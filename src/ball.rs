@@ -6,7 +6,7 @@ pub fn draw_ball(
     mut materials: ResMut<Assets<ColorMaterial>>,
 ){
     commands.spawn(MaterialMesh2dBundle {
-        mesh: meshes.add(shape::Circle::new(20.0).into()).into(),
+        mesh: meshes.add(shape::Circle::new(12.0).into()).into(),
         material: materials.add(ColorMaterial::from(Color::PURPLE)),
         transform: Transform::from_translation(Vec3::new(0.0, 0.0, 0.0)),
         ..default()
