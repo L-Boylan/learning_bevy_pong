@@ -1,6 +1,6 @@
+use bevy::prelude::*;
 mod ball;
 mod paddle;
-use bevy::prelude::*;
 
 pub struct HelloPlugin;
 #[derive(Resource)]
@@ -35,7 +35,11 @@ impl Plugin for HelloPlugin {
     fn build(&self, app: &mut App){
         app.insert_resource(GreetTimer(Timer::from_seconds(2.0, TimerMode::Repeating)))
             .add_systems(Startup, (add_people, paddle::draw_paddle, ball::draw_ball))
-            .add_systems(FixedUpdate, (paddle::move_paddle_player1, paddle::move_paddle_player2))
+            .add_systems(FixedUpdate, (
+                ball::apply_velocity,
+                paddle::move_paddle_player1,
+                paddle::move_paddle_player2
+            ))
             .add_systems(Update, greet_people);
     }
 }

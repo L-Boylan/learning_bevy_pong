@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use crate::ball;
 
 #[derive(Component)]
 pub struct Player1;
@@ -14,7 +15,7 @@ pub fn draw_paddle(
 ) {
     commands.spawn(Camera2dBundle::default());
 
-    commands.spawn((Player1, SpriteBundle{
+    commands.spawn((Player1, ball::Collider, SpriteBundle{
         sprite: Sprite {
             color: Color::rgb(0.25, 0.25, 0.75),
             custom_size: Some(PADDLE_SIZE),
@@ -24,7 +25,7 @@ pub fn draw_paddle(
         ..default()
     }));
 
-    commands.spawn((Player2, SpriteBundle{
+    commands.spawn((Player2, ball::Collider, SpriteBundle{
         sprite: Sprite {
             color: Color::rgb(0.25, 0.25, 0.75),
             custom_size: Some(PADDLE_SIZE),
