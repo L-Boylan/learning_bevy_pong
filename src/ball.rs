@@ -43,4 +43,10 @@ pub fn check_for_collisions(
 ) {
     let (mut ball_velocity, ball_transform) = ball_query.single_mut();
     let ball_size = ball_transform.scale.truncate();
+
+    for (collider_entity, transform) in &collider_query{
+
+    }
 }
+
+// https://bevyengine.org/examples/Games/breakout/
