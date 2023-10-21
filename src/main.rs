@@ -1,6 +1,9 @@
 use bevy::prelude::*;
+use crate::wall::WallBundle;
+
 mod ball;
 mod paddle;
+mod wall;
 
 pub struct HelloPlugin;
 #[derive(Resource)]
@@ -9,6 +12,10 @@ struct GreetTimer(Timer);
 struct Person;
 #[derive(Component)]
 struct Name(String);
+#[derive(Component)]
+pub struct Collider;
+#[derive(Event, Default)]
+pub struct CollisionEvent;
 
 fn main() {
     App::new()
@@ -31,14 +38,25 @@ fn greet_people(time: Res<Time>, mut timer: ResMut<GreetTimer>, query: Query<&Na
     }
 }
 
+fn setup_walls(
+    mut commands: Commands,
+) {
+    commands.spawn(WallBundle::new(wall::WallLocation::Left));
+    commands.spawn(WallBundle::new(wall::WallLocation::Right));
+    commands.spawn(WallBundle::new(wall::WallLocation::Top));
+    commands.spawn(WallBundle::new(wall::WallLocation::Bottom));
+}
+
 impl Plugin for HelloPlugin {
     fn build(&self, app: &mut App){
         app.insert_resource(GreetTimer(Timer::from_seconds(2.0, TimerMode::Repeating)))
-            .add_systems(Startup, (add_people, paddle::draw_paddle, ball::draw_ball))
+            .add_event::<CollisionEvent>()
+            .add_systems(Startup, (add_people, paddle::draw_paddle, ball::draw_ball, setup_walls))
             .add_systems(FixedUpdate, (
-                ball::apply_velocity,
-                paddle::move_paddle_player1,
-                paddle::move_paddle_player2
+                ball::check_for_collisions,
+                ball::apply_velocity.before(ball::check_for_collisions),
+                paddle::move_paddle_player1.before(ball::check_for_collisions).after(ball::apply_velocity),
+                paddle::move_paddle_player2.before(ball::check_for_collisions).after(ball::apply_velocity),
             ))
             .add_systems(Update, greet_people);
     }
