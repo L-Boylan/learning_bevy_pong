@@ -50,6 +50,7 @@ fn setup_walls(
 impl Plugin for HelloPlugin {
     fn build(&self, app: &mut App){
         app.insert_resource(GreetTimer(Timer::from_seconds(2.0, TimerMode::Repeating)))
+            .insert_resource(FixedTime::new_from_secs(1.0 / 60.0))
             .add_event::<CollisionEvent>()
             .add_systems(Startup, (add_people, paddle::draw_paddle, ball::draw_ball, setup_walls))
             .add_systems(FixedUpdate, (
