@@ -8,33 +8,6 @@ pub struct Player2;
 
 const PADDLE_SPEED: f32 = 500.0;
 const PADDLE_SIZE: Vec2 = Vec2::new(30.0, 100.0);
-pub fn draw_paddle(
-    mut commands: Commands,
-    //mut meshes: ResMut<Assets<Mesh>>,
-    //mut materials: ResMut<Assets<ColorMaterial>>
-) {
-    commands.spawn(Camera2dBundle::default());
-
-    commands.spawn((Player1, Collider, SpriteBundle{
-        sprite: Sprite {
-            color: Color::rgb(0.25, 0.25, 0.75),
-            custom_size: Some(PADDLE_SIZE),
-            ..default()
-        },
-        transform: Transform::from_translation(Vec3::new(-480.0, 0.0, 0.0)),
-        ..default()
-    }));
-
-    commands.spawn((Player2, Collider, SpriteBundle{
-        sprite: Sprite {
-            color: Color::rgb(0.25, 0.25, 0.75),
-            custom_size: Some(PADDLE_SIZE),
-            ..default()
-        },
-        transform: Transform::from_translation(Vec3::new(480.0, 0.0, 0.0)),
-        ..default()
-    }));
-}
 
 pub fn move_paddle_player1(
     keyboard_input: Res<Input<KeyCode>>,
