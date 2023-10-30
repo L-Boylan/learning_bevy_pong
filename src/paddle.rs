@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use crate::Collider;
 
 #[derive(Component)]
 pub struct Player1;

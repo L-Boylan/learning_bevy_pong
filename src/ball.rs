@@ -1,4 +1,4 @@
-use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
+use bevy::prelude::*;
 use bevy::sprite::collide_aabb::{collide, Collision};
 use crate::Collider;
 use crate::CollisionEvent;
@@ -17,13 +17,13 @@ pub fn apply_velocity(mut query: Query<(&mut Transform, &Velocity)>, time_step: 
 
 pub fn check_for_collisions(
     mut ball_query: Query<(&mut Velocity, &Transform), With<Ball>>,
-    collider_query: Query<(Entity, &Transform), With<Collider>>,
+    collider_query: Query< &Transform, With<Collider>>,
     mut collision_events: EventWriter<CollisionEvent>,
 ) {
     let (mut ball_velocity, ball_transform) = ball_query.single_mut();
     let ball_size = ball_transform.scale.truncate();
 
-    for (collider_entity, transform) in &collider_query{
+    for transform in &collider_query{
         let collision = collide(
             ball_transform.translation,
             ball_size,
